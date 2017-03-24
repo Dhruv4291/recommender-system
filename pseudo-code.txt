@@ -1,0 +1,71 @@
+Pseudo code for the implicit weighted algorithm is 
+
+set up confidence matrix
+Get the size of our original ratings matrix, m x n
+initialize our X/Y feature vectors randomly with a set seed
+Begin iterations
+	Iterate back and forth between solving X given fixed Y and vice versa
+	Compute yTy and xTx at beginning of each iteration to save computing time
+	Grab user row from confidence matrix and convert to dense
+	Create binarized preference vector
+	Solve for Xu = ((yTy + yT(Cu-I)Y + lambda*I)^-1)yTCuPu 
+	Begin iteration to solve for Y based on fixed X 
+	Solve for Yi = ((xTx + xT(Cu-I)X) + lambda*I)^-1)xTCiPi, equation 5 from the paper
+End iterations
+
+
+Pseudo code for the whole program 
+
+Install implicit
+pandas
+scipy.sparse50
+numpy
+
+Load implicit
+pandas
+scipy.sparse
+numpy
+
+Read newdata.csv
+
+Drop duplicates from read data
+
+Get unique products that were purchased and unique customers 
+
+Get the associated row indices
+
+Get the associated column indices
+
+Make a sparse matrix 
+
+make_train(ratings,percentage of data to be masked in training set) :
+	Make a copy of the original set to be the test setde
+	Store the test set as a binary preference matrix	
+	Make a copy of the original data we can alter as our training set
+	Find the indices in the ratings data where an interaction exists
+	Zip these pairs together of user,item index into list
+	Set the random seed to zero for reproducibility	
+	Round the number of samples needed to the nearest integer
+	Sample a random number of user-item pairs without replacement
+	 Get the user row indices
+	Get the item column indices
+	Assign all of the randomly chosen user-item pairs to zero
+	Get rid of zeros in sparse array storage after update to save space
+	Output the unique list of user rows that were altered
+	
+	
+Import implicit 
+	set user and item vectors to be the implicit function with alpha = 15,factors =50 ,iterating =50 and regularization =0.1
+
+def auc_score :
+	output the area under the curve using sklearn's metrics
+
+def calc_mean_auc: 
+	calculate the mean AUC by user for any user that had their user-item matrix altered.
+
+def rec_items : 
+	return the top recommended items to our users 
+    
+    
+    
+
